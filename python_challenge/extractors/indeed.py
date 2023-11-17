@@ -50,20 +50,26 @@ def extract_indeed_jobs(keyword):
         get_jobs(soup, allJobs)
 
     print(f"all Jobs count is {len(allJobs)}")
-    print_all_jobs(allJobs)
+    # print_all_jobs(allJobs)
     # for j in allJobs:
     #     print(json.dumps(j, indent=2))
+    return allJobs
 
 def print_all_jobs(allJobs):
-    for job in allJobs:
-        print(f"{job['title']}\n")
+    for i in range(len(allJobs)):
+        job = allJobs[i]
+        print(f"({i+1}) {job['title']}\n")
+    # for job in allJobs:
+    #     print(f"{job['title']}\n")
 
 
 # 조회된 결과로 페이지 수 가져오기
 def get_pages(soup):
     pages = 0
     nav = soup.find('nav', attrs={"aria-label": "pagination"})
-    if nav!=None:
+    if nav == None:
+        return 1
+    else:
         anchors = nav.find_all('a')
         for anchor in anchors:
             if (anchor["data-testid"] != "pagination-page-next"):
@@ -116,6 +122,6 @@ def print_guide(base_url, keyword):
     print('=====================================')
 
 
-jobs = extract_indeed_jobs('python')
+# jobs = extract_indeed_jobs('python')
 # print(json.dumps(jobs, indent=2))
 
