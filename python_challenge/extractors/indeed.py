@@ -21,7 +21,7 @@ brew install chromedriver
 # 키워드로 indeed 사이트 일감목록 조회하기
 def extract_indeed_jobs(keyword):
     base_url = "https://kr.indeed.com/jobs?q="
-    query_offset = 10
+    query_offset = 50
     print_guide(base_url, keyword)
 
     allJobs = [];
@@ -33,7 +33,7 @@ def extract_indeed_jobs(keyword):
     # 공유메모리 공간의 사용을 disable함. 메모리 사용량의 폭주를 막기 위함. for replit
     options.add_argument("--disable-dev-shm-usage") 
     
-    browser = webdriver.Safari(options=options)
+    browser = webdriver.Chrome(options=options)
 
     browser.get(f"{base_url}{keyword}&limit={query_offset}&start={start}")
     soup = BeautifulSoup(browser.page_source, "html.parser")
@@ -62,15 +62,21 @@ def print_all_jobs(allJobs):
 # 조회된 결과로 페이지 수 가져오기
 def get_pages(soup):
     pages = 0
-    navs = soup.find_all('nav')
-    for nav in navs:
-        area_label = nav["aria-label"]
-        if ( area_label != None and area_label == "pagination"):
-            anchors = nav.find_all('a')
-            for anchor in anchors:
-                if (anchor["data-testid"] != "pagination-page-next"):
-                    pages = pages+1
-    return pages
+    nav = soup.find('nav', attrs={"aria-label": "pagination"})
+    if nav!=None:
+        anchors = nav.find_all('a')
+        for anchor in anchors:
+            if (anchor["data-testid"] != "pagination-page-next"):
+                pages = pages+1
+    # navs = soup.find_all('nav')
+    # for nav in navs:
+    #     area_label = nav["aria-label"]
+    #     if ( area_label != None and area_label == "pagination"):
+    #         anchors = nav.find_all('a')
+    #         for anchor in anchors:
+    #             if (anchor["data-testid"] != "pagination-page-next"):
+    #                 pages = pages+1
+    return 1 if pages==0 else pages
 
 # 조회된 결과로 일감가져와서 전체 목록에 추가하기
 def get_jobs(soup, allJobs):
