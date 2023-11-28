@@ -2,17 +2,36 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.chrome.service import Service as ChromeService
 
 BASE_URL = "https://www.jobkorea.co.kr"
 
 password = input("JobKorea ntoworks계정의 비번을 입력하세요")
 keyword = input("검색어를 입력하세요: ")
 
+"""
 # WebDriver 인스턴스 생성
 browser = webdriver.Chrome()  # 또는 Firefox, Safari 등
 
 # 로그인 페이지로 이동
 browser.get(f"{BASE_URL}/Login/Logout.asp")
+"""
+
+ff_options = FirefoxOptions()
+ff_options.add_argument("--set-legacy")
+ff_options.add_argument("--headless")
+ff_options.add_argument("--disable-gpu")
+ff_options.add_argument("--no-sandbox")  # Sandbox 비활성화
+ff_options.add_argument("--disable-dev-shm-usage")  # /dev/shm 파티션 사용 비활성화
+
+ff_service = FirefoxService(executable_path="/usr/local/bin/geckodriver")
+browser = webdriver.Firefox(options=ff_options, service=ff_service)
+
+browser.get(f"{BASE_URL}/Login/Logout.asp")
+
 
 # 사용자 이름과 비밀번호 입력 필드 찾기
 nameInput = browser.find_element(By.NAME, "M_ID")  # 'name' 속성에 따라 달라질 수 있음
