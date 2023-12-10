@@ -1,0 +1,20 @@
+{
+  "short_name": "Job Searcher",
+  "name": "Jobkorea Job search",
+  "icons": [
+    {
+      "src": "logo_bb.svg",
+      "sizes": "64x64 32x32 24x24 16x16 192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo_bb.svg",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
